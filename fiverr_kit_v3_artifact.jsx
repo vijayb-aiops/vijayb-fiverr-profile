@@ -35,6 +35,8 @@ const PROFILE = {
   title: "DevOps Engineer and Cloud Platform Automation Specialist",
   specialization:
     "I help startups and engineering teams set up, fix, automate, and scale modern DevOps systems across CI/CD, cloud infrastructure, containers, observability, and DevSecOps.",
+  shortBio:
+    "DevOps Engineer with 5+ years of experience helping teams build, fix, and scale CI/CD, cloud infrastructure, Docker, Kubernetes, Terraform, and observability workflows. I work across AWS, Azure, and GCP with a practical focus on automation, deployment reliability, troubleshooting, and documentation. Ideal for startups and engineering teams that need a stronger DevOps foundation, cleaner release workflows, and production-aware delivery support.",
   bio: `I work with teams that need more than isolated DevOps fixes. I set up and improve complete delivery systems: source control workflows, CI/CD pipelines, Docker builds, Kubernetes deployments, Terraform-based infrastructure, observability, and release operations.
 
 My background includes 5+ years of hands-on DevOps work across enterprise environments, cloud platforms, platform automation, and production troubleshooting. I am comfortable stepping into greenfield setups, inherited infrastructure, unstable release pipelines, and scaling environments where delivery speed and reliability both matter.
@@ -1474,6 +1476,7 @@ export default function FiverrKitV3Artifact() {
                   <ShellBlock label="Profile Title" text={PROFILE.title} />
                 </div>
               </Grid>
+              <ShellBlock label="600-Character Bio" text={PROFILE.shortBio} />
               <ShellBlock label="Profile Bio" text={PROFILE.bio} />
               <Grid>
                 <div style={infoCard()}>
