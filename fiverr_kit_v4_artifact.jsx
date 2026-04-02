@@ -754,12 +754,147 @@ const WEEKS = [
 ];
 
 // ─────────────────────────────────────────────────────────────
+// THUMBNAIL TAB COMPONENT
+// ─────────────────────────────────────────────────────────────
+const GIG_PROMPTS = [
+  { gig:"GIG 1 — Docker Fix",         top:"Docker Broken?",    bot:"Fixed Fast",          icons:"Docker whale logo, Docker Compose icon",                       accent:"#2196F3" },
+  { gig:"GIG 2 — Kubernetes Debug",   top:"K8s Failing?",      bot:"Root Cause Found",    icons:"Kubernetes wheel logo, Helm icon",                             accent:"#326CE5" },
+  { gig:"GIG 3 — GitHub Actions Fix", top:"Pipeline Broken?",  bot:"Back Online Fast",    icons:"GitHub Octocat logo, GitLab fox logo",                         accent:"#2DA44E" },
+  { gig:"GIG 4 — Jenkins Fix",        top:"Jenkins Broken?",   bot:"Pipeline Fixed",      icons:"Jenkins butler logo, Groovy icon",                             accent:"#D33833" },
+  { gig:"GIG 5 — Terraform Fix",      top:"Terraform Broken?", bot:"State Fixed",         icons:"Terraform purple diamond logo, HashiCorp icon",                accent:"#7B42BC" },
+  { gig:"GIG 6 — AWS Fix",            top:"AWS Broken?",       bot:"Fixed & Secured",     icons:"AWS smile logo, IAM shield icon",                              accent:"#FF9900" },
+  { gig:"GIG 7 — Full Pipeline",      top:"Code → Cloud",      bot:"Full Pipeline Built", icons:"Docker whale, GitHub Actions logo, Kubernetes wheel, Helm icon",accent:"#2E75B6" },
+  { gig:"GIG 8 — AWS Infrastructure", top:"AWS Built Right",   bot:"With Terraform",      icons:"AWS smile logo, Terraform diamond logo",                       accent:"#FF9900" },
+  { gig:"GIG 9 — K8s Production",     top:"K8s Production",    bot:"Set Up Right",        icons:"Kubernetes wheel, Prometheus fire logo, Grafana logo",         accent:"#326CE5" },
+  { gig:"GIG 10 — DevOps Audit",      top:"DevOps Audit",      bot:"Fix What Matters",    icons:"magnifying glass icon, checklist icon, DevOps infinity loop",  accent:"#1E6B3C" },
+];
+
+const buildPrompt = (top, bot, icons, accent) =>
+`Create a professional Fiverr gig thumbnail image. Exact specifications:
+
+CANVAS: 1280x769 pixels, landscape orientation.
+
+BACKGROUND: Deep dark navy blue (#0D1B2A) with a subtle dark radial gradient from center (slightly lighter #1A2E45) to edges. Add faint diagonal light-streak lines across the background at 5% opacity for depth — like a tech circuit grid. No cheap gradients.
+
+TOP HEADLINE TEXT:
+— Text: "${top}"
+— Font style: Ultra-bold modern sans-serif (Poppins ExtraBold or Montserrat Black)
+— Size: Very large and dominant — approximately 40% of canvas height
+— Color: Pure white (#FFFFFF)
+— Position: Upper-center of canvas with padding from top
+— Add a thin glowing drop shadow in ${accent} at 40% opacity behind the text
+
+BOTTOM HEADLINE TEXT:
+— Text: "${bot}"
+— Font style: Bold sans-serif, about 60% the size of the top headline
+— Color: ${accent} (fully saturated, bright)
+— Position: Directly below the top headline, center-aligned
+— Add a soft glow/halo in ${accent} at 25% opacity around this text
+
+ICON ROW (bottom section):
+— Show flat, clean, recognizable tech icons for: ${icons}
+— Icons in white or their original brand color on the dark background
+— Arrange horizontally in a neat centered row
+— Icon height approximately 8% of canvas height — they support the text, not compete with it
+— Add a thin horizontal rule (#FFFFFF at 15% opacity) above the icon row as a separator
+
+STYLE RULES (strictly follow):
+— NO stock photos, NO human faces, NO gradients that look like PowerPoint
+— Clean, high-contrast, tech-forward — like a senior engineer designed it
+— ALL text must be fully legible when the image is scaled to 100px width
+— Maximum 6 words total visible across both headlines
+— Use generous negative space — do not crowd the canvas
+— Premium, authoritative feel — not playful or colorful
+
+OUTPUT: PNG, 1280×769px`;
+
+function ThumbTab({ selGig, setSelGig }) {
+  const g = GIG_PROMPTS[selGig];
+  return (
+    <div>
+      <div style={{ fontSize:16, fontWeight:700, color:"#1F4E79", marginBottom:4 }}>ChatGPT Thumbnail Prompt Generator</div>
+      <AlgoTip>Thumbnail CTR is the highest-weighted early algorithm signal. A buyer sees your thumbnail before reading your title. Generate all 10 with ChatGPT (DALL-E 3) — each takes 30 seconds.</AlgoTip>
+
+      <Card title="How to use" bg="#E8F4FD">
+        <div style={{ fontSize:12, lineHeight:1.9 }}>
+          1. Select a gig below → the full prompt auto-updates<br/>
+          2. Click <strong>Copy</strong> → paste into ChatGPT (GPT-4o with image generation enabled)<br/>
+          3. If text rendering is off, reply: <em>"Regenerate with exact text perfectly legible as specified"</em><br/>
+          4. Download → upload directly to Fiverr gig media (PNG, max 5MB, min 712×430px)
+        </div>
+      </Card>
+
+      <div style={{ fontWeight:700, color:"#1F4E79", fontSize:13, margin:"14px 0 8px" }}>Select Gig</div>
+      <div style={{ display:"flex", flexWrap:"wrap", gap:6, marginBottom:14 }}>
+        {GIG_PROMPTS.map((gp,i) => (
+          <button key={i} onClick={() => setSelGig(i)} style={{
+            padding:"6px 12px", fontSize:11, fontWeight:600, cursor:"pointer", borderRadius:20,
+            border: selGig===i?`2px solid ${gp.accent}`:"1px solid #CCC",
+            background: selGig===i?gp.accent:"white",
+            color: selGig===i?"white":"#595959",
+            transition:"all 0.15s",
+          }}>{gp.gig}</button>
+        ))}
+      </div>
+
+      <div style={{ background:"#E8F4FD", border:"1px solid #2E75B6", borderRadius:6, padding:"10px 16px", marginBottom:8 }}>
+        <span style={{ fontWeight:700, color:"#1F4E79", fontSize:13 }}>{g.gig}</span>
+        <div style={{ fontSize:12, color:"#595959", marginTop:4, display:"flex", gap:16, flexWrap:"wrap" }}>
+          <span>Top headline: <strong style={{color:"#1F4E79"}}>{g.top}</strong></span>
+          <span>Bottom headline: <strong style={{color:g.accent}}>{g.bot}</strong></span>
+          <span>Accent: <span style={{background:g.accent,color:"white",padding:"1px 8px",borderRadius:3,fontSize:11,fontWeight:700}}>{g.accent}</span></span>
+        </div>
+      </div>
+
+      <CodeBlock>{buildPrompt(g.top, g.bot, g.icons, g.accent)}</CodeBlock>
+
+      <Card title="All 10 Gigs — Quick Reference (click row to load prompt)" bg="#F6F8FA" border="#CCC" titleColor="#1F4E79">
+        <div style={{ overflowX:"auto" }}>
+          <table style={{ width:"100%", borderCollapse:"collapse", fontSize:11.5 }}>
+            <thead>
+              <tr style={{ background:"#1F4E79", color:"white" }}>
+                {["#","Gig","Top Headline","Bottom Headline","Accent"].map(h=><th key={h} style={{padding:"7px 10px",textAlign:"left"}}>{h}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {GIG_PROMPTS.map((gp,i)=>(
+                <tr key={i} onClick={()=>setSelGig(i)} style={{ background:selGig===i?"#EEF5FB":i%2===0?"#F7FAFD":"white", cursor:"pointer", outline:selGig===i?`2px solid ${gp.accent}`:"none" }}>
+                  <td style={{ padding:"7px 10px", fontWeight:700, color:"#2E75B6", borderBottom:"1px solid #EEE" }}>{i+1}</td>
+                  <td style={{ padding:"7px 10px", fontWeight:700, color:"#1F4E79", borderBottom:"1px solid #EEE" }}>{gp.gig}</td>
+                  <td style={{ padding:"7px 10px", fontWeight:700, borderBottom:"1px solid #EEE" }}>{gp.top}</td>
+                  <td style={{ padding:"7px 10px", fontWeight:700, color:gp.accent, borderBottom:"1px solid #EEE" }}>{gp.bot}</td>
+                  <td style={{ padding:"7px 10px", borderBottom:"1px solid #EEE" }}>
+                    <span style={{background:gp.accent,color:"white",padding:"2px 8px",borderRadius:3,fontSize:11,fontWeight:700}}>{gp.accent}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+
+      <Card title="ChatGPT Tips for Sharpest Results" bg="#FFF8E8" border="#F0A500" titleColor="#B8460B">
+        {[
+          "Use GPT-4o — best DALL-E 3 text rendering. Avoid GPT-4-turbo for images.",
+          "If text is blurry or wrong: reply 'Regenerate — top headline must say exactly: [top text] and bottom must say: [bottom text]. Both fully legible.'",
+          "If background is too light: reply 'Make background pure #0D1B2A dark navy — much darker.'",
+          "If icons are wrong or missing: reply 'Add the specific tech icons from the original prompt in the bottom icon row.'",
+          "Generate 2–3 variations → pick the one with sharpest text at thumbnail scale.",
+          "Final check: zoom out your browser to 20% — if both headlines are still readable, it's good to upload.",
+        ].map((t,i)=><div key={i} style={{fontSize:12,marginBottom:5}}>• {t}</div>)}
+      </Card>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
 // MAIN COMPONENT
 // ─────────────────────────────────────────────────────────────
 export default function FiverrKitV4() {
   const [active, setActive] = useState(0);
   const [openGig, setOpenGig] = useState(null);
   const [openTab, setOpenTab] = useState("desc");
+  const [selGig, setSelGig] = useState(0);
 
   const tab = (i) => ({
     padding:"8px 11px", cursor:"pointer", fontSize:11, fontWeight:600,
@@ -1024,39 +1159,7 @@ I don't theorize — I apply solutions I've already proven under production pres
         )}
 
         {/* TAB 7 — THUMBNAILS */}
-        {active===7 && (
-          <div>
-            <div style={{ fontSize:16, fontWeight:700, color:"#1F4E79", marginBottom:4 }}>Gig Thumbnail Strategy</div>
-            <AlgoTip>Thumbnail CTR is the highest-weighted early algorithm signal. A buyer sees your thumbnail before they read your title. Better thumbnail = more clicks = Fiverr promotes you more. This is the most underrated lever for new sellers in week 1.</AlgoTip>
-            <Card title="Universal Design Rules — Apply to All 10 Gigs" bg="#E8F4FD">
-              {["Size: 1280×769px — Canva has this preset ('Presentation 16:9')","Background: Dark navy #1F4E79 or dark charcoal #1A1A1A — light backgrounds get lost in search results","Font: Montserrat Bold or Poppins Bold — large, white, readable at 100px thumbnail size","Text: Max 6 words total on the image — buyers scan, not read","Bottom bar: Small tech logos (Docker whale, K8s wheel, AWS smile, Terraform diamond, Jenkins gear)","No stock photos — tech icons + clean text only","Optional: Small circle headshot of you in bottom corner — adds human trust signal","Color accent: #2E75B6 (blue) for traffic gigs, #F0A500 (amber) for high-ticket gigs"].map((r,i)=><div key={i} style={{fontSize:12,marginBottom:4}}>• {r}</div>)}
-            </Card>
-            <div style={{ fontWeight:700, color:"#1F4E79", fontSize:14, margin:"14px 0 8px" }}>Thumbnail Text Per Gig</div>
-            <div style={{ overflowX:"auto" }}>
-              <table style={{ width:"100%", borderCollapse:"collapse", fontSize:12 }}>
-                <thead>
-                  <tr style={{ background:"#1F4E79", color:"white" }}>
-                    {["Gig","Headline 1 (Large)","Headline 2","Subtitle","Icons"].map(h=><th key={h} style={{ padding:"8px 10px", textAlign:"left" }}>{h}</th>)}
-                  </tr>
-                </thead>
-                <tbody>
-                  {THUMBS.map((t,i)=>(
-                    <tr key={i} style={{ background:i%2===0?"#F7FAFD":"white" }}>
-                      <td style={{ padding:"8px 10px", fontWeight:700, color:"#1F4E79", borderBottom:"1px solid #EEE" }}>{t.gig}</td>
-                      <td style={{ padding:"8px 10px", fontWeight:700, color:"#1E6B3C", borderBottom:"1px solid #EEE" }}>{t.l1}</td>
-                      <td style={{ padding:"8px 10px", borderBottom:"1px solid #EEE" }}>{t.l2}</td>
-                      <td style={{ padding:"8px 10px", fontSize:11, color:"#595959", borderBottom:"1px solid #EEE" }}>{t.sub}</td>
-                      <td style={{ padding:"8px 10px", fontSize:11, fontStyle:"italic", color:"#595959", borderBottom:"1px solid #EEE" }}>{t.icons}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <Card title="Canva Steps (30 minutes for all 10 thumbnails)" bg="#FFF8E8" border="#F0A500" titleColor="#B8460B">
-              {["canva.com → New design → Custom size → 1280 × 769px","Background: fill with #1F4E79 (dark navy)","Headline 1: Montserrat ExtraBold, size 96, white, top-center","Headline 2: Montserrat Bold, size 72, #A8D4F5 (light blue), below headline 1","Subtitle: Montserrat Regular, size 28, white 70% opacity, lower third","Search Canva for tech logos: Docker, Kubernetes, AWS, Terraform, Jenkins, GitHub","Arrange 3–4 logos in a bottom row, all white or original color at 50% opacity","Export as PNG → upload to Fiverr gig media"].map((s,i)=><div key={i} style={{fontSize:12,marginBottom:4}}>{i+1}. {s}</div>)}
-            </Card>
-          </div>
-        )}
+        {active===7 && <ThumbTab selGig={selGig} setSelGig={setSelGig} />}
 
         {/* TAB 8 — 7-DAY PLAN */}
         {active===8 && (
