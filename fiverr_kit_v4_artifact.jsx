@@ -990,6 +990,22 @@ export default function FiverrKitV4() {
             <div style={{ marginBottom:6, fontWeight:700, color:"#1F4E79", fontSize:14 }}>Full Profile Bio (copy-paste ready)</div>
             <CodeBlock>{BIO}</CodeBlock>
 
+            <div style={{ marginBottom:6, marginTop:16, fontWeight:700, color:"#1F4E79", fontSize:14 }}>Short About Me — Under 600 Characters (Fiverr "About" field)</div>
+            <div style={{ fontSize:11, color:"#595959", marginBottom:6 }}>Use this in the Fiverr profile "About" section — the short description field shown on your public profile page.</div>
+            <CodeBlock>{`7 years building infrastructure that runs itself — automated, secure, and self-healing.
+
+Enterprise background: PointClickCare · Deloitte · Roche
+
+What I deliver:
+• CI/CD pipelines — GitHub Actions, Jenkins, GitLab CI
+• Kubernetes & Docker — production-grade, Helm-managed
+• AWS infrastructure — multi-account, Terraform IaC
+• DevSecOps — SonarQube, Fortify, RBAC, secret rotation
+• Monitoring — Prometheus, Grafana, Dynatrace
+
+99.9% uptime. 40% fewer failures. 90% of manual work automated.`}</CodeBlock>
+            <div style={{ fontSize:11, color:"#595959", marginBottom:12 }}>515 characters — 85 chars under the 600 limit.</div>
+
             <div style={{ marginBottom:6, marginTop:16, fontWeight:700, color:"#1F4E79", fontSize:14 }}>Skills — Add All 15 in This Order</div>
             <AlgoTip>Each skill is a separate searchable tag. Fiverr matches your profile to buyer searches beyond your gig titles. Front-load the highest-demand skills.</AlgoTip>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:6, margin:"10px 0" }}>
